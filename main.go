@@ -9,7 +9,9 @@ import (
 )
 
 var (
-	fontPath = "C:/Windows/Fonts/msyh.ttc"
+	// fontPath = "C:/Windows/Fonts/msyh.ttc"
+	// fontSize float32 = 16
+	fontPath = "/System/Library/Fonts/PingFang.ttc"
 	fontSize float32 = 16
 	windowTitle = "控件样例"
 )
