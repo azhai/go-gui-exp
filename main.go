@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	g "github.com/AllenDang/giu"
@@ -26,8 +27,8 @@ var (
 	dragInt      int32
 	multiline    string
 	radioOp      int
-	date        = time.Now()
-	windowTitle = "控件样例"
+	date         = time.Now()
+	windowTitle  = "控件样例"
 )
 
 func btnClickMeClicked() {
@@ -51,26 +52,71 @@ func btnPopupCLicked() {
 }
 
 func loop() {
-	g.SingleWindowWithMenuBar(windowTitle, g.Layout{
-		g.MenuBar(
-			g.Layout{
-				g.Menu("文件", g.Layout{
-					g.MenuItem("打开", nil),
-					g.MenuItem("保存", nil),
-					// You could add any kind of widget here, not just menu item.
-					g.Menu("另存为 ...", g.Layout{
-						g.MenuItem("Excel 文件", nil),
-						g.MenuItem("CSV 文件", nil),
-						g.Button("菜单内按钮", nil),
-					},
-					),
+	menus := g.MenuBar(
+		g.Layout{
+			g.Menu("文件", g.Layout{
+				g.MenuItem("打开", nil),
+				g.MenuItem("保存", nil),
+				// You could add any kind of widget here, not just menu item.
+				g.Menu("另存为 ...", g.Layout{
+					g.MenuItem("Excel 文件", nil),
+					g.MenuItem("CSV 文件", nil),
+					g.Button("菜单内按钮", nil),
 				},
 				),
 			},
-		),
+			),
+		},
+	)
+
+	tabs := g.TabBar("Tabbar Input", g.Layout{
+		g.TabItem("Multiline Input", g.Layout{
+			g.Label("This is first tab with a multiline input text field"),
+			g.InputTextMultiline("##multiline", &multiline, -1, -1, 0, nil, nil),
+		}),
+		g.TabItem("Tree", g.Layout{
+			g.TreeNode("TreeNode1", imgui.TreeNodeFlagsCollapsingHeader|imgui.TreeNodeFlagsDefaultOpen, g.Layout{
+				g.Label("Tree node 1"),
+				g.Label("Tree node 1"),
+				g.Label("Tree node 1"),
+				g.Button("Button inside tree", nil),
+			}),
+			g.TreeNode("TreeNode2", 0, g.Layout{
+				g.Label("Tree node 2"),
+				g.Label("Tree node 2"),
+				g.Label("Tree node 2"),
+				g.Button("Button inside tree", nil),
+			}),
+		}),
+		g.TabItem("ListBox", g.Layout{
+			g.ListBox("ListBox1", []string{"List item 1", "List item 2", "List item 3"}, nil, nil),
+		}),
+		g.TabItem("Table", g.Layout{
+			g.Table("Table", true, g.Rows{
+				g.Row(g.LabelWrapped("Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog"), g.Label("Age"), g.Label("Loc")),
+				g.Row(g.LabelWrapped("Second Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog"), g.Label("Age"), g.Label("Loc")),
+				g.Row(g.Label("Name"), g.Label("Age"), g.Label("Location")),
+				g.Row(g.Label("Allen"), g.Label("33"), g.Label("Shanghai/China")),
+				g.Row(g.Checkbox("check me", &checked, nil), g.Button("click me", nil), g.Label("Anything")),
+			}),
+		}),
+		g.TabItem("Group", g.Layout{
+			g.Line(
+				g.Group(g.Layout{
+					g.Label("I'm inside group 1"),
+				}),
+				g.Group(g.Layout{
+					g.Label("I'm inside group 2"),
+				}),
+			),
+		}),
+	})
+
+	g.SingleWindowWithMenuBar(windowTitle, g.Layout{
+		menus,
 
 		g.Label("One line label"),
-		g.LabelWrapped("Auto wrapped label with very long line " + 
+		g.LabelWrapped("Auto wrapped label with very long line " +
 			"............................................... " +
 			"............................................... " +
 			"............................................... " +
@@ -118,48 +164,7 @@ func loop() {
 			}),
 		),
 
-		g.TabBar("Tabbar Input", g.Layout{
-			g.TabItem("Multiline Input", g.Layout{
-				g.Label("This is first tab with a multiline input text field"),
-				g.InputTextMultiline("##multiline", &multiline, -1, -1, 0, nil, nil),
-			}),
-			g.TabItem("Tree", g.Layout{
-				g.TreeNode("TreeNode1", imgui.TreeNodeFlagsCollapsingHeader|imgui.TreeNodeFlagsDefaultOpen, g.Layout{
-					g.Label("Tree node 1"),
-					g.Label("Tree node 1"),
-					g.Label("Tree node 1"),
-					g.Button("Button inside tree", nil),
-				}),
-				g.TreeNode("TreeNode2", 0, g.Layout{
-					g.Label("Tree node 2"),
-					g.Label("Tree node 2"),
-					g.Label("Tree node 2"),
-					g.Button("Button inside tree", nil),
-				}),
-			}),
-			g.TabItem("ListBox", g.Layout{
-				g.ListBox("ListBox1", []string{"List item 1", "List item 2", "List item 3"}, nil, nil),
-			}),
-			g.TabItem("Table", g.Layout{
-				g.Table("Table", true, g.Rows{
-					g.Row(g.LabelWrapped("Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog"), g.Label("Age"), g.Label("Loc")),
-					g.Row(g.LabelWrapped("Second Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog"), g.Label("Age"), g.Label("Loc")),
-					g.Row(g.Label("Name"), g.Label("Age"), g.Label("Location")),
-					g.Row(g.Label("Allen"), g.Label("33"), g.Label("Shanghai/China")),
-					g.Row(g.Checkbox("check me", &checked, nil), g.Button("click me", nil), g.Label("Anything")),
-				}),
-			}),
-			g.TabItem("Group", g.Layout{
-				g.Line(
-					g.Group(g.Layout{
-						g.Label("I'm inside group 1"),
-					}),
-					g.Group(g.Layout{
-						g.Label("I'm inside group 2"),
-					}),
-				),
-			}),
-		}),
+		tabs,
 	})
 }
 
@@ -170,6 +175,14 @@ func main() {
 	}
 
 	w := g.NewMasterWindow(windowTitle, 800, 600, 0, loadFont)
-	imgui.StyleColorsLight()
+	// 四种UI风格：default/dark/light/classic
+	switch strings.ToLower(uiStyleName) {
+	case "classic":
+		imgui.StyleColorsClassic()
+	case "dark":
+		imgui.StyleColorsDark()
+	case "light":
+		imgui.StyleColorsLight()
+	}
 	w.Main(loop)
 }
