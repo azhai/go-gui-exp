@@ -15,4 +15,5 @@
 *.txt
 *.upx
 
-*.exe
+gui-exp
+gui-exp.exe

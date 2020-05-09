@@ -12,6 +12,6 @@ IF "%1" == "build" GOTO build
     go.exe mod tidy
     go.exe mod vendor
 :all
-    del adm.exe
+    del gui-exp.exe
 :build
-    go.exe build -ldflags="-s -w -H=windowsgui" -mod=vendor -o adm.exe .
+    go.exe build -ldflags="-s -w -H=windowsgui" -mod=vendor -o gui-exp.exe .

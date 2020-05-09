@@ -8,14 +8,6 @@ import (
 	"github.com/AllenDang/giu/imgui"
 )
 
-var (
-	// fontPath = "C:/Windows/Fonts/msyh.ttc"
-	// fontSize float32 = 16
-	fontPath = "/System/Library/Fonts/PingFang.ttc"
-	fontSize float32 = 16
-	windowTitle = "控件样例"
-)
-
 func loadFont() {
 	fonts := g.Context.IO().Fonts()
 	ranges := imgui.NewGlyphRanges()
@@ -34,7 +26,8 @@ var (
 	dragInt      int32
 	multiline    string
 	radioOp      int
-	date         time.Time = time.Now()
+	date        = time.Now()
+	windowTitle = "控件样例"
 )
 
 func btnClickMeClicked() {
@@ -75,6 +68,7 @@ func loop() {
 				),
 			},
 		),
+
 		g.Label("One line label"),
 		g.LabelWrapped("Auto wrapped label with very long line " + 
 			"............................................... " +
