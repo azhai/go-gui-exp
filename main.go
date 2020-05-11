@@ -126,10 +126,11 @@ func loop() {
 			g.Button("点击", btnClickMeClicked),
 			g.Tooltip("我是 tooltip"),
 		),
-		g.DatePicker("选择日期", &date, 100, func() {
-			fmt.Println(date)
-		}),
+
 		g.Line(
+			g.DatePicker("选择日期", &date, 100, func() {
+				fmt.Println(date)
+			}),
 			g.Checkbox("Checkbox", &checked, func() {
 				fmt.Println(checked)
 			}),
@@ -145,7 +146,6 @@ func loop() {
 		g.ProgressBar(0.8, -1, 0, "进度条 80%"),
 		g.DragInt("DragInt", &dragInt),
 		g.SliderInt("Slider", &dragInt, 0, 100, ""),
-
 		g.Combo("Combo", items[itemSelected], items, &itemSelected, 0, 0, comboChanged),
 
 		g.Line(
